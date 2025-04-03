@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/schema/11.5.xsd"
+        bootstrap="src/tests/bootstrap.php"
+        colors="true"
+>
+    <php>
+        <const name="ABSPATH" value="NOT_UNDEFINED"/>
+    </php>
+    <testsuites>
+        <testsuite name="BVLWARK Update Server WordPress Plugin Test Suite">
+            <directory>./src/tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
