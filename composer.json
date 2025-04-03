@@ -1,0 +1,38 @@
+{
+  "name": "drazenbebic/bvlwark-update-server",
+  "version": "0.1.0",
+  "type": "wordpress-plugin",
+  "license": "MIT",
+  "scripts": {
+    "lint": "./vendor/bin/phpcs --standard=phpcs.xml",
+    "lint-fix": "./vendor/bin/phpcbf --standard=phpcs.xml",
+    "post-install-cmd": [
+      "chmod +x ./scripts/download_wordpress.sh",
+      "./scripts/download_wordpress.sh"
+    ]
+  },
+  "autoload": {
+    "psr-4": {
+      "BVLWARK\\UpdateServer\\": "src/includes/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Drazen Bebic",
+      "email": "drazen@bebic.at",
+      "homepage": "https://drazen.bebic.dev",
+      "role": "developer"
+    }
+  ],
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "require-dev": {
+    "wp-coding-standards/wpcs": "^3.1"
+  },
+  "require": {
+    "php": "^8.3"
+  }
+}

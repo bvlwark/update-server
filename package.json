@@ -1,0 +1,27 @@
+{
+  "name": "@drazenbebic/bvlwark-update-server",
+  "version": "0.1.0",
+  "description": "Easy, automated, and programmatic maintenance for WordPress",
+  "scripts": {
+    "prepare": "husky",
+    "zip": "sh ./scripts/zip.sh"
+  },
+  "author": {
+    "url": "https://drazen.bebic.dev",
+    "email": "drazen@bebic.at",
+    "name": "Drazen Bebic"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/exec": "^7.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.1",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "husky": "^9.1.7",
+    "semantic-release": "^24.2.3"
+  },
+  "packageManager": "yarn@4.7.0"
+}
