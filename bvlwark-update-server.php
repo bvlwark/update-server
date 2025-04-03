@@ -17,6 +17,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // Require function files.
 require_once __DIR__ . '/src/functions/core-functions.php';
+require_once __DIR__ . '/src/functions/item-functions.php';
+require_once __DIR__ . '/src/functions/item-version-functions.php';
 require_once __DIR__ . '/src/functions/template-functions.php';
 
 // Define the plugin version.
