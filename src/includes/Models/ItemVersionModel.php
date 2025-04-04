@@ -37,31 +37,25 @@ class ItemVersionModel extends AbstractModel {
 	 */
 	protected string $changelog;
 
-	/**
-	 * @var bool
-	 */
-	protected bool $protected;
-
 
 	/**
-	 * ActivationModel constructor.
+	 * ItemVersionModel constructor.
 	 *
-	 * @param null|stdClass $item API key data.
+	 * @param null|stdClass $item_version Item version data.
 	 */
-	public function __construct( ?stdClass $item = null ) {
-		parent::__construct( $item );
+	public function __construct( ?stdClass $item_version = null ) {
+		parent::__construct( $item_version );
 
-		if ( ! $item ) {
+		if ( ! $item_version ) {
 			return;
 		}
 
-		$this->item_id     = (int) $item->item_id;
-		$this->version     = (string) $item->version;
-		$this->requires    = (string) $item->requires;
-		$this->tested      = (string) $item->tested;
-		$this->description = (string) $item->description;
-		$this->changelog   = (string) $item->changelog;
-		$this->protected   = (bool) $item->description;
+		$this->item_id     = (int) $item_version->item_id;
+		$this->version     = (string) $item_version->version;
+		$this->requires    = (string) $item_version->requires;
+		$this->tested      = (string) $item_version->tested;
+		$this->description = (string) $item_version->description;
+		$this->changelog   = (string) $item_version->changelog;
 	}
 
 	/**
@@ -146,19 +140,5 @@ class ItemVersionModel extends AbstractModel {
 	 */
 	public function set_changelog( string $changelog ): void {
 		$this->changelog = $changelog;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function is_protected(): bool {
-		return $this->protected;
-	}
-
-	/**
-	 * @param bool $is_protected New protection status.
-	 */
-	public function set_protected( bool $is_protected ): void {
-		$this->protected = $is_protected;
 	}
 }

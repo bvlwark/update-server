@@ -16,6 +16,7 @@ defined( 'ABSPATH' ) || exit;
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Require function files.
+require_once __DIR__ . '/src/functions/api-key-functions.php';
 require_once __DIR__ . '/src/functions/core-functions.php';
 require_once __DIR__ . '/src/functions/item-functions.php';
 require_once __DIR__ . '/src/functions/item-version-functions.php';

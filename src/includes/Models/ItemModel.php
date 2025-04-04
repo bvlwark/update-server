@@ -10,7 +10,7 @@ class ItemModel extends AbstractModel {
 	/**
 	 * @var string
 	 */
-	protected string $type;
+	protected string $name;
 
 	/**
 	 * @var string
@@ -20,23 +20,23 @@ class ItemModel extends AbstractModel {
 	/**
 	 * @var string
 	 */
-	protected string $name;
+	protected string $type;
 
 	/**
-	 * @var string
+	 * @var null|string
 	 */
-	protected string $description;
+	protected ?string $description;
 
 	/**
 	 * @var bool
 	 */
-	protected bool $protected;
+	protected bool $is_public;
 
 
 	/**
-	 * ActivationModel constructor.
+	 * ItemModel constructor.
 	 *
-	 * @param null|stdClass $item API key data.
+	 * @param null|stdClass $item Item data.
 	 */
 	public function __construct( ?stdClass $item = null ) {
 		parent::__construct( $item );
@@ -45,39 +45,13 @@ class ItemModel extends AbstractModel {
 			return;
 		}
 
-		$this->type        = (string) $item->type;
-		$this->slug        = (string) $item->slug;
 		$this->name        = (string) $item->name;
-		$this->description = (string) $item->description;
-		$this->protected   = (bool) $item->description;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function get_type(): string {
-		return $this->type;
-	}
-
-	/**
-	 * @param string $type New type.
-	 */
-	public function set_type( string $type ): void {
-		$this->type = $type;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function get_slug(): string {
-		return $this->slug;
-	}
-
-	/**
-	 * @param string $slug New slug.
-	 */
-	public function set_slug( string $slug ): void {
-		$this->slug = $slug;
+		$this->slug        = (string) $item->slug;
+		$this->type        = (string) $item->type;
+		$this->description = ! empty( $item->description )
+			? (string) $item->description
+			: null;
+		$this->is_public   = (bool) $item->is_public;
 	}
 
 	/**
@@ -97,28 +71,56 @@ class ItemModel extends AbstractModel {
 	/**
 	 * @return string
 	 */
-	public function get_description(): string {
+	public function get_slug(): string {
+		return $this->slug;
+	}
+
+	/**
+	 * @param string $slug New slug.
+	 */
+	public function set_slug( string $slug ): void {
+		$this->slug = $slug;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_type(): string {
+		return $this->type;
+	}
+
+	/**
+	 * @param string $type New type.
+	 */
+	public function set_type( string $type ): void {
+		$this->type = $type;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function get_description(): ?string {
 		return $this->description;
 	}
 
 	/**
-	 * @param string $description New description.
+	 * @param null|string $description New description.
 	 */
-	public function set_description( string $description ): void {
+	public function set_description( ?string $description ): void {
 		$this->description = $description;
 	}
 
 	/**
 	 * @return bool
 	 */
-	public function is_protected(): bool {
-		return $this->protected;
+	public function is_public(): bool {
+		return $this->is_public;
 	}
 
 	/**
-	 * @param bool $protected_value Protection identifier.
+	 * @param bool $is_public New is_public value.
 	 */
-	public function set_protected( bool $protected_value ): void {
-		$this->protected = $protected_value;
+	public function set_public( bool $is_public ): void {
+		$this->is_public = $is_public;
 	}
 }

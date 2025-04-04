@@ -14,6 +14,8 @@ class Installer {
 
 	const string ITEM_VERSION_TABLE_NAME = 'bvlwark_update_server_item_version';
 
+	const string API_KEY_TABLE_NAME = 'bvlwark_update_server_api_key';
+
 	/**
 	 * Installation script.
 	 *
@@ -42,6 +44,7 @@ class Installer {
 		$tables = array(
 			$wpdb->prefix . self::ITEM_TABLE_NAME,
 			$wpdb->prefix . self::ITEM_VERSION_TABLE_NAME,
+			$wpdb->prefix . self::API_KEY_TABLE_NAME,
 		);
 
 		foreach ( $tables as $table ) {
@@ -96,11 +99,11 @@ class Installer {
 				"
 				CREATE TABLE IF NOT EXISTS %i (
 					`id`           BIGINT(20)  UNSIGNED  NOT NULL AUTO_INCREMENT,
-					`type`         VARCHAR(8)            NOT NULL,
-					`slug`         VARCHAR(200)          NOT NULL,
 					`name`         VARCHAR(255)          NOT NULL,
+					`slug`         VARCHAR(200)          NOT NULL,
+					`type`         VARCHAR(8)            NOT NULL,
 					`description`  TEXT                  NOT NULL,
-					`protected`    TINYINT(1)            NOT NULL DEFAULT 1,
+					`is_public`    TINYINT(1)            NOT NULL DEFAULT 1,
 					`created_at`   DATETIME              DEFAULT CURRENT_TIMESTAMP,
 					`created_by`   BIGINT(20)  UNSIGNED  NOT NULL,
 					`updated_at`   DATETIME              NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -122,9 +125,8 @@ class Installer {
 					`version`      VARCHAR(50)           NOT NULL,
 					`requires`     VARCHAR(50)           NOT NULL,
 					`tested`       VARCHAR(50)           NOT NULL,
-					`description`  TEXT                  NOT NULL,
+					`description`  TEXT                  NULL DEFAULT NULL,
 					`changelog`    TEXT                  NOT NULL,
-					`protected`    TINYINT(1)            NOT NULL DEFAULT 1,
 					`created_at`   DATETIME              DEFAULT CURRENT_TIMESTAMP,
 					`created_by`   BIGINT(20)  UNSIGNED  NOT NULL,
 					`updated_at`   DATETIME              NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
@@ -134,6 +136,32 @@ class Installer {
 				) {$wpdb->get_charset_collate()};
 				",
 				$wpdb->prefix . self::ITEM_VERSION_TABLE_NAME,
+			)
+		);
+
+		dbDelta(
+			$wpdb->prepare(
+				"
+				CREATE TABLE IF NOT EXISTS %i (
+					`id`               BIGINT(20)    UNSIGNED  NOT NULL AUTO_INCREMENT,
+					`user_id`          BIGINT(20)    UNSIGNED  NOT NULL,
+					`description`      VARCHAR(200)            NULL DEFAULT NULL,
+					`permissions`      VARCHAR(10)             NOT NULL,
+					`consumer_key`     CHAR(64)                NOT NULL,
+					`consumer_secret`  CHAR(43)                NOT NULL,
+					`nonces`           LONGTEXT                NULL,
+					`truncated_key`    CHAR(7)                 NOT NULL,
+					`last_access`      DATETIME                NULL DEFAULT NULL,
+					`created_at`       DATETIME                NOT NULL,
+					`created_by`       BIGINT(20)    UNSIGNED  NOT NULL,
+					`updated_at`       DATETIME                NULL DEFAULT NULL,
+					`updated_by`       BIGINT(20)    UNSIGNED  NULL DEFAULT NULL,
+					PRIMARY KEY (`id`),
+					INDEX `bvlwark_update_server_api_keys_index_consumer_key` (`consumer_key`),
+					INDEX `bvlwark_update_server_api_keys_index_consumer_secret` (`consumer_secret`)
+				) {$wpdb->get_charset_collate()};
+				",
+				$wpdb->prefix . self::API_KEY_TABLE_NAME,
 			)
 		);
 	}

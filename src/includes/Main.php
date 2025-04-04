@@ -66,6 +66,8 @@ final class Main extends AbstractSingleton {
 	 */
 	public function init(): void {
 		Installer::migrate();
+
+		new Admin\Menu();
 	}
 
 	/**

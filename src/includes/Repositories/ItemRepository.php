@@ -17,9 +17,9 @@ class ItemRepository extends AbstractRepository {
 		$this->table   = $wpdb->prefix . Installer::ITEM_TABLE_NAME;
 		$this->model   = ItemModel::class;
 		$this->mapping = array(
-			'type'        => ColumnTypeEnum::VARCHAR,
-			'slug'        => ColumnTypeEnum::VARCHAR,
 			'name'        => ColumnTypeEnum::VARCHAR,
+			'slug'        => ColumnTypeEnum::VARCHAR,
+			'type'        => ColumnTypeEnum::VARCHAR,
 			'description' => ColumnTypeEnum::TEXT,
 			'protected'   => ColumnTypeEnum::TINYINT,
 		);

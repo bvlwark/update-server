@@ -448,8 +448,8 @@ abstract class AbstractRepository extends AbstractSingleton implements Repositor
 							break;
 						case OperatorEnum::BETWEEN:
 							if ( is_string( $values[0] ) && is_string( $values[1] ) ) {
-								$value0  = bvlwark_update_server_clean_string( $values[0] );
-								$value1  = bvlwark_update_server_clean_string( $values[1] );
+								$value0  = bvlwark_clean_string( $values[0] );
+								$value1  = bvlwark_clean_string( $values[1] );
 								$result .= $wpdb->prepare( "AND $column BETWEEN %s AND %s ", $value0, $value1 );
 							} elseif ( is_numeric( $values[0] ) && is_numeric( $values[1] ) ) {
 								$value0  = (int) $values[0];
