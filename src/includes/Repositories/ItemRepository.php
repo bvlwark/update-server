@@ -21,7 +21,7 @@ class ItemRepository extends AbstractRepository {
 			'slug'        => ColumnTypeEnum::VARCHAR,
 			'type'        => ColumnTypeEnum::VARCHAR,
 			'description' => ColumnTypeEnum::TEXT,
-			'protected'   => ColumnTypeEnum::TINYINT,
+			'is_public'   => ColumnTypeEnum::TINYINT,
 		);
 	}
 }

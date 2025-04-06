@@ -2,6 +2,8 @@
 
 namespace BVLWARK\UpdateServer;
 
+use BVLWARK\UpdateServer\Controllers\ItemController;
+
 defined( 'ABSPATH' ) || exit;
 
 final class Main extends AbstractSingleton {
@@ -56,6 +58,8 @@ final class Main extends AbstractSingleton {
 		register_deactivation_hook( BVLWARK_UPDATE_SERVER_PLUGIN_FILE, array( '\BVLWARK\UpdateServer\Installer', 'deactivate' ) );
 		register_uninstall_hook( BVLWARK_UPDATE_SERVER_PLUGIN_FILE, array( '\BVLWARK\UpdateServer\Installer', 'uninstall' ) );
 
+		add_action( 'admin_enqueue_scripts', array( 'BVLWARK\UpdateServer\AssetManager', 'register' ), 11 );
+		add_action( 'admin_enqueue_scripts', array( 'BVLWARK\UpdateServer\AssetManager', 'enqueue' ), 20 );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 	}
 
@@ -68,6 +72,24 @@ final class Main extends AbstractSingleton {
 		Installer::migrate();
 
 		new Admin\Menu();
+
+		$this->init_controllers();
+	}
+
+	/**
+	 * Initializes all plugin controllers.
+	 *
+	 * @return void
+	 */
+	private function init_controllers(): void {
+		$controllers = array(
+			ItemController::class,
+		);
+
+		/** @var SingletonInterface $controller */
+		foreach ( $controllers as $controller ) {
+			$controller::instance();
+		}
 	}
 
 	/**

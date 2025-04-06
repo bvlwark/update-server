@@ -37,7 +37,7 @@ class Notification {
 			if ( $messages && is_array( $messages ) ) {
 				foreach ( $messages as $message ) {
 					printf(
-						'<div class="notice %s is-dismissible"><p><b>BVLWARK Licenses</b>: %s</p></div>',
+						'<div class="notice %s is-dismissible"><p><b>BVLWARK</b>: %s</p></div>',
 						esc_html( $class ),
 						esc_html( $message )
 					);

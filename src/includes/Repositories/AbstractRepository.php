@@ -74,7 +74,7 @@ abstract class AbstractRepository extends AbstractSingleton implements Repositor
 				)
 			);
 
-			$result = wp_cache_set( $cache_id, $result );
+			wp_cache_set( $cache_id, $result );
 		}
 
 		if ( ! $result ) {
@@ -363,11 +363,15 @@ abstract class AbstractRepository extends AbstractSingleton implements Repositor
 			switch ( $this->mapping[ $column ] ) {
 				case ColumnTypeEnum::CHAR:
 				case ColumnTypeEnum::VARCHAR:
-				case ColumnTypeEnum::LONGTEXT:
-				case ColumnTypeEnum::TEXT:
 				case ColumnTypeEnum::DATETIME:
 					if ( $value !== null ) {
 						$data[ $column ] = sanitize_text_field( $value );
+					}
+					break;
+				case ColumnTypeEnum::TEXT:
+				case ColumnTypeEnum::LONGTEXT:
+					if ( $value !== null ) {
+						$data[ $column ] = wp_kses( $value, bvlwark_allowed_html() );
 					}
 					break;
 				case ColumnTypeEnum::INT:

@@ -109,7 +109,7 @@ class ItemsTable extends AbstractTable {
 						Menu::ITEMS_PAGE,
 						(int) $item['id']
 					),
-					'bvlwark_edit_item'
+					'bvlwark_upsert_item'
 				)
 			),
 			esc_html__( 'Edit', 'bvlwark-update-server' )
@@ -151,7 +151,9 @@ class ItemsTable extends AbstractTable {
 	 * @return string
 	 */
 	public function column_type( array $item ): string {
-		return $item['type'];
+		return $item['type'] === ItemTypeEnum::PLUGIN
+			? esc_html__( 'Plugin', 'bvlwark-update-server' )
+			: esc_html__( 'Theme', 'bvlwark-update-server' );
 	}
 
 	/**
@@ -173,7 +175,9 @@ class ItemsTable extends AbstractTable {
 	 * @return string
 	 */
 	public function column_is_public( array $item ): string {
-		return $item['is_public'];
+		return (int) $item['is_public']
+			? esc_html__( 'Public', 'bvlwark-update-server' )
+			: esc_html__( 'Private', 'bvlwark-update-server' );
 	}
 
 	/**
@@ -407,8 +411,8 @@ class ItemsTable extends AbstractTable {
 		$message = esc_html(
 			// translators: %d: number of items deleted.
 			_n(
-				'%d item permanently deleted.',
-				'%d items permanently deleted.',
+				'%s item deleted.',
+				'%s items deleted.',
 				$count,
 				'bvlwark-update-server',
 			)

@@ -1,6 +1,67 @@
 <?php
 
+use BVLWARK\UpdateServer\HtmlRenderer;
+
 defined( 'ABSPATH' ) || exit;
+
+if ( ! function_exists( 'bvlwark_render_admin_input' ) ) {
+	/**
+	 * Renders an input field.
+	 *
+	 * @param array $args Input field data.
+	 *
+	 * @return void
+	 */
+	function bvlwark_render_admin_input( array $args ): void {
+		$html = apply_filters( 'bvlwark_render_admin_input', HtmlRenderer::render_admin_input( $args ), $args );
+
+		echo wp_kses( $html, bvlwark_allowed_html() );
+	}
+}
+
+if ( ! function_exists( 'bvlwark_render_admin_select' ) ) {
+	/**
+	 * Renders a select field.
+	 *
+	 * @param array $args Input field data.
+	 *
+	 * @return void
+	 */
+	function bvlwark_render_admin_select( array $args ): void {
+		$html = apply_filters( 'bvlwark_render_admin_select', HtmlRenderer::render_admin_select( $args ), $args );
+
+		echo wp_kses( $html, bvlwark_allowed_html() );
+	}
+}
+
+
+if ( ! function_exists( 'bvlwark_render_admin_textarea' ) ) {
+	/**
+	 * Renders a textarea field.
+	 *
+	 * @param array $args Textarea field data.
+	 *
+	 * @return void
+	 */
+	function bvlwark_render_admin_textarea( array $args ): void {
+		$html = apply_filters( 'bvlwark_render_admin_textarea', HtmlRenderer::render_admin_textarea( $args ), $args );
+
+		echo wp_kses( $html, bvlwark_allowed_html() );
+	}
+}
+
+if ( ! function_exists( 'bvlwark_render_admin_rich_text' ) ) {
+	/**
+	 * Renders a textarea as a rich text field.
+	 *
+	 * @param array $args Rich text field data.
+	 *
+	 * @return void
+	 */
+	function bvlwark_render_admin_rich_text( array $args ): void {
+		HtmlRenderer::render_admin_rich_text( $args );
+	}
+}
 
 if ( ! function_exists( 'bvlwark_get_template_html' ) ) {
 	/**
@@ -36,5 +97,52 @@ if ( ! function_exists( 'bvlwark_get_template_html' ) ) {
 			extract( $args );
 			require $template;
 		}
+	}
+}
+
+
+if ( ! function_exists( 'bvlwark_get_asset_url' ) ) {
+	/**
+	 * Returns the URL of an asset file.
+	 *
+	 * @param string $file_name File name of the general asset.
+	 *
+	 * @return string
+	 */
+	function bvlwark_get_asset_url( string $file_name ): string {
+		return apply_filters( 'bvlwark_asset_url', BVLWARK_UPDATE_SERVER_ASSETS_URL . $file_name, $file_name );
+	}
+}
+
+if ( ! function_exists( 'bvlwark_get_js_url' ) ) {
+	/**
+	 * @param string $file_name File name of the JavaScript asset.
+	 *
+	 * @return string
+	 */
+	function bvlwark_get_js_url( string $file_name ): string {
+		return apply_filters( 'bvlwark_js_url', BVLWARK_UPDATE_SERVER_JS_URL . $file_name, $file_name );
+	}
+}
+
+if ( ! function_exists( 'bvlwark_get_css_url' ) ) {
+	/**
+	 * @param string $file_name File name of the CSS asset.
+	 *
+	 * @return string
+	 */
+	function bvlwark_get_css_url( string $file_name ): string {
+		return apply_filters( 'bvlwark_css_url', BVLWARK_UPDATE_SERVER_CSS_URL . $file_name, $file_name );
+	}
+}
+
+if ( ! function_exists( 'bvlwark_get_img_url' ) ) {
+	/**
+	 * @param string $file_name File name of the image asset.
+	 *
+	 * @return string
+	 */
+	function bvlwark_get_img_url( string $file_name ): string {
+		return apply_filters( 'bvlwark_get_img_url', BVLWARK_UPDATE_SERVER_IMG_URL . $file_name, $file_name );
 	}
 }

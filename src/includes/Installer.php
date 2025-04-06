@@ -1,4 +1,5 @@
 <?php
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 
 namespace BVLWARK\UpdateServer;
 
@@ -26,6 +27,7 @@ class Installer {
 		self::create_tables();
 		self::set_default_settings();
 		self::create_roles();
+		self::create_vault_directory();
 	}
 
 	/**
@@ -78,7 +80,7 @@ class Installer {
 	 *
 	 * @throws Exception The PHP version is not correct.
 	 */
-	public static function check_requirements(): void {
+	private static function check_requirements(): void {
 		if ( version_compare( phpversion(), '8.3.0', '<' ) ) {
 			throw new Exception( 'PHP 8.2 or lower detected. BVLWARK Update Server requires PHP 8.3 or greater.' );
 		}
@@ -87,7 +89,7 @@ class Installer {
 	/**
 	 * Create the necessary database tables.
 	 */
-	public static function create_tables(): void {
+	private static function create_tables(): void {
 		global $wpdb;
 
 		if ( ! function_exists( '\dbDelta' ) ) {
@@ -169,7 +171,7 @@ class Installer {
 	/**
 	 * Set the default plugin options.
 	 */
-	public static function set_default_settings(): void {
+	private static function set_default_settings(): void {
 		// Only update user settings if they don't exist already.
 		foreach ( self::get_default_settings() as $group => $setting ) {
 			if ( ! get_option( $group, false ) ) {
@@ -188,14 +190,14 @@ class Installer {
 	 *
 	 * @return array
 	 */
-	public static function get_default_settings(): array {
+	private static function get_default_settings(): array {
 		return array();
 	}
 
 	/**
 	 * Add plugin roles.
 	 */
-	public static function create_roles(): void {
+	private static function create_roles(): void {
 		global $wp_roles;
 
 		// Dummy gettext calls to get strings in the catalog.
@@ -270,7 +272,7 @@ class Installer {
 	/**
 	 * Remove plugin roles
 	 */
-	public static function remove_roles(): void {
+	private static function remove_roles(): void {
 		global $wp_roles;
 
 		foreach ( self::get_rest_api_capabilities() as $cap_group ) {
@@ -296,7 +298,7 @@ class Installer {
 	 *
 	 * @return array
 	 */
-	public static function get_core_capabilities(): array {
+	private static function get_core_capabilities(): array {
 		$capabilities = array();
 
 		$capabilities['core'] = array(
@@ -318,7 +320,7 @@ class Installer {
 	 *
 	 * @return array
 	 */
-	public static function get_rest_api_capabilities(): array {
+	private static function get_rest_api_capabilities(): array {
 		$capabilities = array(
 			'updates' => array(
 				'plugin_update_do',
@@ -329,5 +331,36 @@ class Installer {
 		);
 
 		return apply_filters( 'bvlwark_update_server_rest_api_capabilities', $capabilities );
+	}
+
+	/**
+	 * Creates the /wp-content/bvlwark directory for storing uploaded ZIP files.
+	 * Adds .htaccess and index.html to prevent public access.
+	 *
+	 * @return void
+	 */
+	private static function create_vault_directory(): void {
+		$vault_dir   = trailingslashit( WP_CONTENT_DIR ) . 'bvlwark';
+		$folder_path = apply_filters( 'bvlwark_update_server_vault_directory', $vault_dir );
+
+		if ( ! is_dir( $folder_path ) ) {
+			if ( ! wp_mkdir_p( $folder_path ) ) {
+				return;
+			}
+		}
+
+		// Block browser access: Apache.
+		$htaccess_path = trailingslashit( $folder_path ) . '.htaccess';
+
+		if ( ! file_exists( $htaccess_path ) ) {
+			file_put_contents( $htaccess_path, "deny from all\n" );
+		}
+
+		// Block directory listing.
+		$index_path = trailingslashit( $folder_path ) . 'index.html';
+
+		if ( ! file_exists( $index_path ) ) {
+			file_put_contents( $index_path, '' );
+		}
 	}
 }

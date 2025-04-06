@@ -15,23 +15,23 @@ class ItemsPage {
 	protected ItemsTable $list;
 
 	/**
-	 * Licenses constructor.
+	 * ItemsPage constructor.
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'create_pages' ), 9 );
 		add_action( 'bvlwark_render_page_items_list', array( $this, 'list' ) );
 		add_action( 'bvlwark_render_page_items_delete', array( $this, 'list' ) );
-		add_action( 'bvlwark_render_page_items_add', array( $this, 'add' ) );
-		add_action( 'bvlwark_render_page_items_edit', array( $this, 'edit' ) );
+		add_action( 'bvlwark_render_page_items_add', array( $this, 'upsert' ) );
+		add_action( 'bvlwark_render_page_items_edit', array( $this, 'upsert' ) );
 	}
 
 	/**
-	 * Sets up the licenses plugin pages.
+	 * Sets up the items plugin pages.
 	 */
 	public function create_pages(): void {
 		add_menu_page(
 			__( 'BVLWARK Update Server', 'bvlwark-update-server' ),
-			__( 'Items', 'bvlwark-update-server' ),
+			__( 'BVLWARK Update Server', 'bvlwark-update-server' ),
 			'manage_bvlwark_update_server',
 			Menu::ITEMS_PAGE,
 			array( $this, 'page' ),
@@ -90,7 +90,7 @@ class ItemsPage {
 					sprintf(
 						'admin.php?page=%s&action=add&_wpnonce=%s',
 						Menu::ITEMS_PAGE,
-						wp_create_nonce( 'bvlwark_add_item' )
+						wp_create_nonce( 'bvlwark_upsert_item' )
 					)
 				),
 			)
@@ -98,40 +98,25 @@ class ItemsPage {
 	}
 
 	/**
-	 * Renders the "Items -> Add" page.
+	 * Renders the "Items -> Add" or "Items -> Edit" page.
 	 *
 	 * @return void
 	 */
-	public function add(): void {
-		check_admin_referer( 'bvlwark_add_item' );
+	public function upsert(): void {
+		check_admin_referer( 'bvlwark_upsert_item' );
 
-		bvlwark_get_template_html( 'items/bvlwark-page-add-item.php' );
-	}
-
-	/**
-	 * Renders the "Items -> Edit" page.
-	 *
-	 * @return void
-	 */
-	public function edit(): void {
-		check_admin_referer( 'bvlwark_edit_items' );
-
-		if ( isset( $_GET['id'] ) ) {
-			$item_id = (int) $_GET['id'];
-		} else {
-			wp_die( esc_html__( 'Item ID missing from request', 'bvlwark-update-server' ) );
-		}
-
-		$item = bvlwark_get_item( $item_id );
+		$item_id = bvlwark_clean_int_request_value( 'id' );
+		$item    = $item_id ? bvlwark_get_item( $item_id ) : null;
 
 		if ( is_wp_error( $item ) ) {
 			wp_die( esc_html( $item->get_error_message() ) );
 		}
 
 		bvlwark_get_template_html(
-			'items/bvlwark-page-edit-item.php',
+			'items/bvlwark-page-upsert-item.php',
 			array(
-				'item' => $item,
+				'item_id' => $item_id,
+				'item'    => $item,
 			)
 		);
 	}

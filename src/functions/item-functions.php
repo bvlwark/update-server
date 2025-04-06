@@ -51,11 +51,11 @@ if ( ! function_exists( 'bvlwark_add_item' ) ) {
 		/** @var null|ItemModel $item */
 		$item = ItemRepository::instance()->insert_one(
 			array(
-				'name'         => $name,
-				'slug'         => $slug,
-				'type'         => $type,
-				'$description' => $description,
-				'$is_public'   => $is_public,
+				'name'        => $name,
+				'slug'        => $slug,
+				'type'        => $type,
+				'description' => $description,
+				'is_public'   => $is_public,
 			)
 		);
 
@@ -167,7 +167,7 @@ if ( ! function_exists( 'bvlwark_update_item' ) ) {
 				array(
 					'slug' => $data['slug'],
 					'id'   => array(
-						OperatorEnum::NOT_LIKE => $data['id'],
+						OperatorEnum::NOT_LIKE => $id,
 					),
 				)
 			);
@@ -187,6 +187,10 @@ if ( ! function_exists( 'bvlwark_update_item' ) ) {
 			}
 
 			$update_data['type'] = $type;
+		}
+
+		if ( array_key_exists( 'description', $data ) ) {
+			$update_data['description'] = $data['description'];
 		}
 
 		// Normalize the "is_public" value.

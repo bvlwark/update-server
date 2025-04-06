@@ -3,8 +3,6 @@
 namespace BVLWARK\UpdateServer\Tables;
 
 use BVLWARK\UpdateServer\Admin\Notification;
-use DateTime;
-use Exception;
 use WP_List_Table;
 
 defined( 'ABSPATH' ) || exit;
@@ -66,7 +64,6 @@ abstract class AbstractTable extends WP_List_Table {
 	 * @param array $item Associative array of column name and value pairs.
 	 *
 	 * @return string
-	 * @throws Exception DateTime instantiation.
 	 */
 	public function column_created( array $item ): string {
 		$html = '';
@@ -75,13 +72,13 @@ abstract class AbstractTable extends WP_List_Table {
 			$offset_seconds = floatval( $this->gmt_offset ) * 60 * 60;
 			$timestamp      = strtotime( $item['created_at'] ) + $offset_seconds;
 			$result         = gmdate( BVLWARK_UPDATE_SERVER_DB_DATE_FORMAT, $timestamp );
-			$date           = new DateTime( $result );
+			$date           = bvlwark_safe_date_time( $result );
 
 			$html .= sprintf(
 				'<span>%s <b>%s, %s</b></span>',
 				esc_html__( 'at', 'bvlwark-update-server' ),
-				$date->format( $this->date_format ),
-				$date->format( $this->time_format )
+				$date?->format( $this->date_format ),
+				$date?->format( $this->time_format )
 			);
 		}
 
@@ -115,7 +112,6 @@ abstract class AbstractTable extends WP_List_Table {
 	 * @param array $item Associative array of column name and value pairs.
 	 *
 	 * @return string
-	 * @throws Exception DateTime instantiation.
 	 */
 	public function column_updated( array $item ): string {
 		$html = '';
@@ -124,13 +120,13 @@ abstract class AbstractTable extends WP_List_Table {
 			$offset_seconds = floatval( $this->gmt_offset ) * 60 * 60;
 			$timestamp      = strtotime( $item['updated_at'] ) + $offset_seconds;
 			$result         = gmdate( BVLWARK_UPDATE_SERVER_DB_DATE_FORMAT, $timestamp );
-			$date           = new DateTime( $result );
+			$date           = bvlwark_safe_date_time( $result );
 
 			$html .= sprintf(
 				'<span>%s <b>%s, %s</b></span>',
 				esc_html__( 'at', 'bvlwark-update-server' ),
-				$date->format( $this->date_format ),
-				$date->format( $this->time_format )
+				$date?->format( $this->date_format ),
+				$date?->format( $this->time_format )
 			);
 		}
 
