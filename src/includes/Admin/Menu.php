@@ -6,21 +6,21 @@ defined( 'ABSPATH' ) || exit;
 
 class Menu {
 	/**
-	 * Items page slug.
+	 * Packages page slug.
 	 */
-	const string ITEMS_PAGE = 'bvlwark_update_server_items';
+	const string PACKAGES_PAGE = 'bvlwark_packages';
 
 	/**
 	 * Settings page slug.
 	 */
-	const string SETTINGS_PAGE = 'bvlwark_update_server_settings';
+	const string SETTINGS_PAGE = 'bvlwark_settings';
 
 	/**
 	 * Class constructor.
 	 */
 	public function __construct() {
 		// Plugin pages.
-		new Pages\ItemsPage();
+		new Pages\PackagesPage();
 		new Pages\SettingsPage();
 
 		// Screen options.
@@ -37,8 +37,8 @@ class Menu {
 	 */
 	public function get_plugin_page_ids(): array {
 		return array(
-			'toplevel_page_bvlwark_update_server_items',
-			'items_page_bvlwark_update_server_settings',
+			'toplevel_page_bvlwark_packages',
+			'packages_page_bvlwark_settings',
 		);
 	}
 

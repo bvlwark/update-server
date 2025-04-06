@@ -2,7 +2,7 @@
 
 namespace BVLWARK\UpdateServer;
 
-use BVLWARK\UpdateServer\Controllers\ItemController;
+use BVLWARK\UpdateServer\Controllers\PackageController;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -29,23 +29,23 @@ final class Main extends AbstractSingleton {
 			define( 'ABSPATH_LENGTH', strlen( ABSPATH ) );
 		}
 
-		define( 'BVLWARK_UPDATE_SERVER_ABSPATH', dirname( BVLWARK_UPDATE_SERVER_PLUGIN_FILE ) . '/src/' );
-		define( 'BVLWARK_UPDATE_SERVER_PLUGIN_BASENAME', plugin_basename( BVLWARK_UPDATE_SERVER_PLUGIN_FILE ) );
+		define( 'BVLWARK_ABSPATH', dirname( BVLWARK_PLUGIN_FILE ) . '/src/' );
+		define( 'BVLWARK_UPDATE_SERVER_PLUGIN_BASENAME', plugin_basename( BVLWARK_PLUGIN_FILE ) );
 
 		// Directories.
-		define( 'BVLWARK_UPDATE_SERVER_ASSETS_DIR', BVLWARK_UPDATE_SERVER_ABSPATH . 'assets/' );
-		define( 'BVLWARK_UPDATE_SERVER_LOG_DIR', BVLWARK_UPDATE_SERVER_ABSPATH . 'logs/' );
-		define( 'BVLWARK_UPDATE_SERVER_TEMPLATES_DIR', BVLWARK_UPDATE_SERVER_ABSPATH . 'templates/' );
-		define( 'BVLWARK_UPDATE_SERVER_MIGRATIONS_DIR', BVLWARK_UPDATE_SERVER_ABSPATH . 'migrations/' );
+		define( 'BVLWARK_ASSETS_DIR', BVLWARK_ABSPATH . 'assets/' );
+		define( 'BVLWARK_LOG_DIR', BVLWARK_ABSPATH . 'logs/' );
+		define( 'BVLWARK_TEMPLATES_DIR', BVLWARK_ABSPATH . 'templates/' );
+		define( 'BVLWARK_MIGRATIONS_DIR', BVLWARK_ABSPATH . 'migrations/' );
 
 		// URLs.
-		define( 'BVLWARK_UPDATE_SERVER_ASSETS_URL', BVLWARK_UPDATE_SERVER_PLUGIN_URL . 'assets/' );
-		define( 'BVLWARK_UPDATE_SERVER_CSS_URL', BVLWARK_UPDATE_SERVER_ASSETS_URL . 'css/' );
-		define( 'BVLWARK_UPDATE_SERVER_JS_URL', BVLWARK_UPDATE_SERVER_ASSETS_URL . 'js/' );
-		define( 'BVLWARK_UPDATE_SERVER_IMG_URL', BVLWARK_UPDATE_SERVER_ASSETS_URL . 'img/' );
+		define( 'BVLWARK_ASSETS_URL', BVLWARK_PLUGIN_URL . 'assets/' );
+		define( 'BVLWARK_CSS_URL', BVLWARK_ASSETS_URL . 'css/' );
+		define( 'BVLWARK_JS_URL', BVLWARK_ASSETS_URL . 'js/' );
+		define( 'BVLWARK_IMG_URL', BVLWARK_ASSETS_URL . 'img/' );
 
 		// Helpers.
-		define( 'BVLWARK_UPDATE_SERVER_DB_DATE_FORMAT', 'Y-m-d H:i:s' );
+		define( 'BVLWARK_DB_DATE_FORMAT', 'Y-m-d H:i:s' );
 	}
 
 	/**
@@ -54,9 +54,9 @@ final class Main extends AbstractSingleton {
 	 * @return void
 	 */
 	private function init_hooks(): void {
-		register_activation_hook( BVLWARK_UPDATE_SERVER_PLUGIN_FILE, array( '\BVLWARK\UpdateServer\Installer', 'install' ) );
-		register_deactivation_hook( BVLWARK_UPDATE_SERVER_PLUGIN_FILE, array( '\BVLWARK\UpdateServer\Installer', 'deactivate' ) );
-		register_uninstall_hook( BVLWARK_UPDATE_SERVER_PLUGIN_FILE, array( '\BVLWARK\UpdateServer\Installer', 'uninstall' ) );
+		register_activation_hook( BVLWARK_PLUGIN_FILE, array( '\BVLWARK\UpdateServer\Installer', 'install' ) );
+		register_deactivation_hook( BVLWARK_PLUGIN_FILE, array( '\BVLWARK\UpdateServer\Installer', 'deactivate' ) );
+		register_uninstall_hook( BVLWARK_PLUGIN_FILE, array( '\BVLWARK\UpdateServer\Installer', 'uninstall' ) );
 
 		add_action( 'admin_enqueue_scripts', array( 'BVLWARK\UpdateServer\AssetManager', 'register' ), 11 );
 		add_action( 'admin_enqueue_scripts', array( 'BVLWARK\UpdateServer\AssetManager', 'enqueue' ), 20 );
@@ -83,7 +83,7 @@ final class Main extends AbstractSingleton {
 	 */
 	private function init_controllers(): void {
 		$controllers = array(
-			ItemController::class,
+			PackageController::class,
 		);
 
 		/** @var SingletonInterface $controller */

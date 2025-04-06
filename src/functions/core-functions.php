@@ -32,16 +32,16 @@ if ( ! function_exists( 'bvlwark_safe_date_time' ) ) {
 	}
 }
 
-if ( ! function_exists( 'bvlwark_update_server_vault_directory_path' ) ) {
+if ( ! function_exists( 'bvlwark_vault_directory_path' ) ) {
 	/**
 	 * Returns the server path to the plugin's vault directory.
 	 *
 	 * @return string
 	 */
-	function bvlwark_update_server_vault_directory_path(): string {
+	function bvlwark_vault_directory_path(): string {
 		$vault_dir_path = trailingslashit( WP_CONTENT_DIR ) . 'bvlwark';
 
-		return apply_filters( 'bvlwark_update_server_vault_directory_path', $vault_dir_path );
+		return apply_filters( 'bvlwark_vault_directory_path', $vault_dir_path );
 	}
 }
 

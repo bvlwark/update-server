@@ -78,7 +78,7 @@ if ( ! function_exists( 'bvlwark_get_template_html' ) ) {
 		string $template_name,
 		array $args = array(),
 		string $template_path = '',
-		string $default_path = BVLWARK_UPDATE_SERVER_TEMPLATES_DIR
+		string $default_path = BVLWARK_TEMPLATES_DIR
 	): void {
 		$stylesheet_dir       = get_stylesheet_directory();
 		$overwritten_template = $stylesheet_dir . '/bvlwark-update-server/' . $template_name;
@@ -110,7 +110,7 @@ if ( ! function_exists( 'bvlwark_get_asset_url' ) ) {
 	 * @return string
 	 */
 	function bvlwark_get_asset_url( string $file_name ): string {
-		return apply_filters( 'bvlwark_asset_url', BVLWARK_UPDATE_SERVER_ASSETS_URL . $file_name, $file_name );
+		return apply_filters( 'bvlwark_asset_url', BVLWARK_ASSETS_URL . $file_name, $file_name );
 	}
 }
 
@@ -121,7 +121,7 @@ if ( ! function_exists( 'bvlwark_get_js_url' ) ) {
 	 * @return string
 	 */
 	function bvlwark_get_js_url( string $file_name ): string {
-		return apply_filters( 'bvlwark_js_url', BVLWARK_UPDATE_SERVER_JS_URL . $file_name, $file_name );
+		return apply_filters( 'bvlwark_js_url', BVLWARK_JS_URL . $file_name, $file_name );
 	}
 }
 
@@ -132,7 +132,7 @@ if ( ! function_exists( 'bvlwark_get_css_url' ) ) {
 	 * @return string
 	 */
 	function bvlwark_get_css_url( string $file_name ): string {
-		return apply_filters( 'bvlwark_css_url', BVLWARK_UPDATE_SERVER_CSS_URL . $file_name, $file_name );
+		return apply_filters( 'bvlwark_css_url', BVLWARK_CSS_URL . $file_name, $file_name );
 	}
 }
 
@@ -143,6 +143,6 @@ if ( ! function_exists( 'bvlwark_get_img_url' ) ) {
 	 * @return string
 	 */
 	function bvlwark_get_img_url( string $file_name ): string {
-		return apply_filters( 'bvlwark_get_img_url', BVLWARK_UPDATE_SERVER_IMG_URL . $file_name, $file_name );
+		return apply_filters( 'bvlwark_get_img_url', BVLWARK_IMG_URL . $file_name, $file_name );
 	}
 }

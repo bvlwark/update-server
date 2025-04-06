@@ -32,7 +32,7 @@ class Notification {
 	 */
 	public function init(): void {
 		foreach ( $this->types as $type => $class ) {
-			$messages = get_transient( "bvlwark_update_server_notice_$type" );
+			$messages = get_transient( "bvlwark_notice_$type" );
 
 			if ( $messages && is_array( $messages ) ) {
 				foreach ( $messages as $message ) {
@@ -43,7 +43,7 @@ class Notification {
 					);
 				}
 
-				delete_transient( "bvlwark_update_server_notice_$type" );
+				delete_transient( "bvlwark_notice_$type" );
 			}
 		}
 	}
@@ -56,7 +56,7 @@ class Notification {
 	 * @param int    $duration Duration of the notice (in seconds).
 	 */
 	public static function add( string $level, string $message, int $duration = 60 ): void {
-		$messages = get_transient( "bvlwark_update_server_notice_$level" );
+		$messages = get_transient( "bvlwark_notice_$level" );
 
 		if ( $messages && is_array( $messages ) ) {
 			$messages[] = $message;
@@ -64,7 +64,7 @@ class Notification {
 			$messages = array( $message );
 		}
 
-		set_transient( "bvlwark_update_server_notice_$level", $messages, $duration );
+		set_transient( "bvlwark_notice_$level", $messages, $duration );
 	}
 
 	/**

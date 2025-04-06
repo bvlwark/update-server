@@ -6,7 +6,7 @@ use ReflectionClass;
 
 defined( 'ABSPATH' ) || exit;
 
-abstract class ItemTypeEnum {
+abstract class PackageTypeEnum {
 	/**
 	 * Enumerator value used for plugin types.
 	 *

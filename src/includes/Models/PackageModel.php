@@ -6,7 +6,7 @@ use stdClass;
 
 defined( 'ABSPATH' ) || exit;
 
-class ItemModel extends AbstractModel {
+class PackageModel extends AbstractModel {
 	/**
 	 * @var string
 	 */
@@ -34,24 +34,24 @@ class ItemModel extends AbstractModel {
 
 
 	/**
-	 * ItemModel constructor.
+	 * PackageModel constructor.
 	 *
-	 * @param null|stdClass $item Item data.
+	 * @param null|stdClass $package Package data.
 	 */
-	public function __construct( ?stdClass $item = null ) {
-		parent::__construct( $item );
+	public function __construct( ?stdClass $package = null ) {
+		parent::__construct( $package );
 
-		if ( ! $item ) {
+		if ( ! $package ) {
 			return;
 		}
 
-		$this->name        = (string) $item->name;
-		$this->slug        = (string) $item->slug;
-		$this->type        = (string) $item->type;
-		$this->description = ! empty( $item->description )
-			? (string) $item->description
+		$this->name        = (string) $package->name;
+		$this->slug        = (string) $package->slug;
+		$this->type        = (string) $package->type;
+		$this->description = ! empty( $package->description )
+			? (string) $package->description
 			: null;
-		$this->is_public   = (bool) $item->is_public;
+		$this->is_public   = (bool) $package->is_public;
 	}
 
 	/**

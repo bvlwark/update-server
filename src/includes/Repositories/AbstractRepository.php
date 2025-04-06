@@ -221,7 +221,7 @@ abstract class AbstractRepository extends AbstractSingleton implements Repositor
 		global $wpdb;
 
 		$sql_query  = "UPDATE $this->table SET ";
-		$sql_query .= $wpdb->prepare( ' updated_at = %s,', gmdate( BVLWARK_UPDATE_SERVER_DB_DATE_FORMAT ) );
+		$sql_query .= $wpdb->prepare( ' updated_at = %s,', gmdate( BVLWARK_DB_DATE_FORMAT ) );
 		$sql_query .= $wpdb->prepare( ' updated_by = %d,', get_current_user_id() );
 
 		foreach ( $data as $column => $value ) {
@@ -393,7 +393,7 @@ abstract class AbstractRepository extends AbstractSingleton implements Repositor
 	 */
 	private function get_meta_created(): array {
 		$meta = array(
-			'created_at' => gmdate( BVLWARK_UPDATE_SERVER_DB_DATE_FORMAT ),
+			'created_at' => gmdate( BVLWARK_DB_DATE_FORMAT ),
 			'created_by' => get_current_user_id(),
 		);
 
@@ -408,7 +408,7 @@ abstract class AbstractRepository extends AbstractSingleton implements Repositor
 	 */
 	private function get_meta_updated(): array {
 		$meta = array(
-			'updated_at' => gmdate( BVLWARK_UPDATE_SERVER_DB_DATE_FORMAT ),
+			'updated_at' => gmdate( BVLWARK_DB_DATE_FORMAT ),
 			'updated_by' => get_current_user_id(),
 		);
 

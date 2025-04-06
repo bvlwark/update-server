@@ -35,12 +35,12 @@ class AssetManager {
 	 * @return void
 	 */
 	private static function register_scripts( string $hook ): void {
-		if ( $hook === 'toplevel_page_bvlwark_update_server_items' ) {
+		if ( $hook === 'toplevel_page_bvlwark_packages' ) {
 			wp_register_script(
 				'bvlwark_admin_page_items',
 				bvlwark_get_js_url( 'bvlwark-admin-page-items.js' ),
 				array( 'jquery' ),
-				BVLWARK_UPDATE_SERVER_PLUGIN_VERSION,
+				BVLWARK_PLUGIN_VERSION,
 				false,
 			);
 		}
@@ -54,7 +54,7 @@ class AssetManager {
 	 * @return void
 	 */
 	public static function enqueue( string $hook ): void {
-		if ( $hook === 'toplevel_page_bvlwark_update_server_items' ) {
+		if ( $hook === 'toplevel_page_bvlwark_packages' ) {
 			wp_enqueue_editor();
 			wp_enqueue_script( 'bvlwark_admin_page_items' );
 		}

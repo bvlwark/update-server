@@ -71,7 +71,7 @@ abstract class AbstractTable extends WP_List_Table {
 		if ( $item['created_at'] ) {
 			$offset_seconds = floatval( $this->gmt_offset ) * 60 * 60;
 			$timestamp      = strtotime( $item['created_at'] ) + $offset_seconds;
-			$result         = gmdate( BVLWARK_UPDATE_SERVER_DB_DATE_FORMAT, $timestamp );
+			$result         = gmdate( BVLWARK_DB_DATE_FORMAT, $timestamp );
 			$date           = bvlwark_safe_date_time( $result );
 
 			$html .= sprintf(
@@ -119,7 +119,7 @@ abstract class AbstractTable extends WP_List_Table {
 		if ( $item['updated_at'] ) {
 			$offset_seconds = floatval( $this->gmt_offset ) * 60 * 60;
 			$timestamp      = strtotime( $item['updated_at'] ) + $offset_seconds;
-			$result         = gmdate( BVLWARK_UPDATE_SERVER_DB_DATE_FORMAT, $timestamp );
+			$result         = gmdate( BVLWARK_DB_DATE_FORMAT, $timestamp );
 			$date           = bvlwark_safe_date_time( $result );
 
 			$html .= sprintf(

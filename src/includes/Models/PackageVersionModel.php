@@ -6,11 +6,11 @@ use stdClass;
 
 defined( 'ABSPATH' ) || exit;
 
-class ItemVersionModel extends AbstractModel {
+class PackageVersionModel extends AbstractModel {
 	/**
 	 * @var int
 	 */
-	protected int $item_id;
+	protected int $package_id;
 
 	/**
 	 * @var string
@@ -34,36 +34,36 @@ class ItemVersionModel extends AbstractModel {
 
 
 	/**
-	 * ItemVersionModel constructor.
+	 * PackageVersionModel constructor.
 	 *
-	 * @param null|stdClass $item_version Item version data.
+	 * @param null|stdClass $package_version Package version data.
 	 */
-	public function __construct( ?stdClass $item_version = null ) {
-		parent::__construct( $item_version );
+	public function __construct( ?stdClass $package_version = null ) {
+		parent::__construct( $package_version );
 
-		if ( ! $item_version ) {
+		if ( ! $package_version ) {
 			return;
 		}
 
-		$this->item_id   = (int) $item_version->item_id;
-		$this->version   = (string) $item_version->version;
-		$this->requires  = (string) $item_version->requires;
-		$this->tested    = (string) $item_version->tested;
-		$this->changelog = (string) $item_version->changelog;
+		$this->package_id = (int) $package_version->package_id;
+		$this->version    = (string) $package_version->version;
+		$this->requires   = (string) $package_version->requires;
+		$this->tested     = (string) $package_version->tested;
+		$this->changelog  = (string) $package_version->changelog;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function get_item_id(): int {
-		return $this->item_id;
+	public function get_package_id(): int {
+		return $this->package_id;
 	}
 
 	/**
-	 * @param int $item_id New Item ID.
+	 * @param int $package_id New package ID.
 	 */
-	public function set_item_id( int $item_id ): void {
-		$this->item_id = $item_id;
+	public function set_package_id( int $package_id ): void {
+		$this->package_id = $package_id;
 	}
 
 	/**

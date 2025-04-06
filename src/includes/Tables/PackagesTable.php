@@ -5,24 +5,24 @@ namespace BVLWARK\UpdateServer\Tables;
 use BVLWARK\UpdateServer\Admin\Menu;
 use BVLWARK\UpdateServer\Admin\Notification;
 use BVLWARK\UpdateServer\Installer;
-use BVLWARK\UpdateServer\ItemTypeEnum;
+use BVLWARK\UpdateServer\PackageTypeEnum;
 
 defined( 'ABSPATH' ) || exit;
 
-class ItemsTable extends AbstractTable {
+class PackagesTable extends AbstractTable {
 	/**
-	 * ItemsTable constructor.
+	 * PackagesTable constructor.
 	 */
 	public function __construct() {
 		global $wpdb;
 
 		parent::__construct(
 			array(
-				'singular' => __( 'Item', 'bvlwark-update-server' ),
-				'plural'   => __( 'Items', 'bvlwark-update-server' ),
+				'singular' => __( 'Package', 'bvlwark-update-server' ),
+				'plural'   => __( 'Packages', 'bvlwark-update-server' ),
 				'ajax'     => false,
 			),
-			$wpdb->prefix . Installer::ITEM_TABLE_NAME
+			$wpdb->prefix . Installer::PACKAGE_TABLE_NAME
 		);
 	}
 
@@ -45,29 +45,29 @@ class ItemsTable extends AbstractTable {
 			$all_url,
 			$class,
 			__( 'All', 'bvlwark-update-server' ),
-			bvlwark_get_item_count()
+			bvlwark_get_package_count()
 		);
 
 		// Plugins.
-		$class                   = $current === ItemTypeEnum::PLUGIN ? ' class="current"' : '';
-		$plugins_url             = esc_url( add_query_arg( 'type', ItemTypeEnum::PLUGIN ) );
+		$class                   = $current === PackageTypeEnum::PLUGIN ? ' class="current"' : '';
+		$plugins_url             = esc_url( add_query_arg( 'type', PackageTypeEnum::PLUGIN ) );
 		$status_links['plugins'] = sprintf(
 			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
 			$plugins_url,
 			$class,
 			__( 'Plugins', 'bvlwark-update-server' ),
-			bvlwark_get_item_count( array( 'type' => ItemTypeEnum::PLUGIN ) )
+			bvlwark_get_package_count( array( 'type' => PackageTypeEnum::PLUGIN ) )
 		);
 
 		// Themes.
-		$class                  = $current === ItemTypeEnum::THEME ? ' class="current"' : '';
-		$themes_url             = esc_url( add_query_arg( 'type', ItemTypeEnum::THEME ) );
+		$class                  = $current === PackageTypeEnum::THEME ? ' class="current"' : '';
+		$themes_url             = esc_url( add_query_arg( 'type', PackageTypeEnum::THEME ) );
 		$status_links['themes'] = sprintf(
 			'<a href="%s" %s>%s <span class="count">(%d)</span></a>',
 			$themes_url,
 			$class,
 			__( 'Themes', 'bvlwark-update-server' ),
-			bvlwark_get_item_count( array( 'type' => ItemTypeEnum::THEME ) )
+			bvlwark_get_package_count( array( 'type' => PackageTypeEnum::THEME ) )
 		);
 
 		return $status_links;
@@ -106,10 +106,10 @@ class ItemsTable extends AbstractTable {
 				wp_nonce_url(
 					sprintf(
 						'admin.php?page=%s&action=edit&id=%d',
-						Menu::ITEMS_PAGE,
+						Menu::PACKAGES_PAGE,
 						(int) $item['id']
 					),
-					'bvlwark_upsert_item'
+					'bvlwark_upsert_package'
 				)
 			),
 			esc_html__( 'Edit', 'bvlwark-update-server' )
@@ -119,11 +119,13 @@ class ItemsTable extends AbstractTable {
 		$actions['delete'] = sprintf(
 			'<a href="%s">%s</a>',
 			admin_url(
-				sprintf(
-					'admin.php?page=%s&action=delete&id=%d&_wpnonce=%s',
-					Menu::ITEMS_PAGE,
-					(int) $item['id'],
-					wp_create_nonce( 'delete' )
+				wp_nonce_url(
+					sprintf(
+						'admin.php?page=%s&action=delete&id=%d',
+						Menu::PACKAGES_PAGE,
+						(int) $item['id'],
+					),
+					'delete',
 				)
 			),
 			__( 'Delete', 'bvlwark-update-server' )
@@ -151,7 +153,7 @@ class ItemsTable extends AbstractTable {
 	 * @return string
 	 */
 	public function column_type( array $item ): string {
-		return $item['type'] === ItemTypeEnum::PLUGIN
+		return $item['type'] === PackageTypeEnum::PLUGIN
 			? esc_html__( 'Plugin', 'bvlwark-update-server' )
 			: esc_html__( 'Theme', 'bvlwark-update-server' );
 	}
@@ -189,7 +191,7 @@ class ItemsTable extends AbstractTable {
 	 * @return string
 	 */
 	public function column_default( $item, $column_name ): string {
-		$item = apply_filters( 'bvlwark_update_server_table_items_column_value', $item, $column_name );
+		$item = apply_filters( 'bvlwark_table_packages_column_value', $item, $column_name );
 
 		return $item[ $column_name ];
 	}
@@ -212,13 +214,13 @@ class ItemsTable extends AbstractTable {
 		);
 
 		return apply_filters(
-			'bvlwark_update_server_table_items_column_sortable',
+			'bvlwark_table_packages_column_sortable',
 			$sortable_columns
 		);
 	}
 
 	/**
-	 * Defines items in the bulk action dropdown.
+	 * Defines packages in the bulk action dropdown.
 	 *
 	 * @return array
 	 */
@@ -228,7 +230,7 @@ class ItemsTable extends AbstractTable {
 		);
 
 		return apply_filters(
-			'bvlwark_update_server_table_items_bulk_actions',
+			'bvlwark_table_packages_bulk_actions',
 			$bulk_actions
 		);
 	}
@@ -256,7 +258,7 @@ class ItemsTable extends AbstractTable {
 
 		$this->process_bulk_actions();
 
-		$per_page     = $this->get_items_per_page( 'bvlwark_update_server_items_per_page', 10 );
+		$per_page     = $this->get_items_per_page( 'bvlwark_packages_per_page', 10 );
 		$current_page = $this->get_pagenum();
 		$items_count  = $this->get_items_count();
 
@@ -272,9 +274,9 @@ class ItemsTable extends AbstractTable {
 	}
 
 	/**
-	 * Retrieves the items from the database.
+	 * Retrieves the packages from the database.
 	 *
-	 * @param int $per_page    Default amount of items per page.
+	 * @param int $per_page    Default amount of packages per page.
 	 * @param int $page_number Default page number.
 	 *
 	 * @return array
@@ -287,7 +289,7 @@ class ItemsTable extends AbstractTable {
 	}
 
 	/**
-	 * Retrieves the items table row count.
+	 * Retrieves the package table row count.
 	 *
 	 * @return int
 	 */
@@ -301,7 +303,7 @@ class ItemsTable extends AbstractTable {
 	/**
 	 * Builds the SQL query used for data selection in the table.
 	 *
-	 * @param int|null $per_page    How many items per page.
+	 * @param int|null $per_page    How many packages per page.
 	 * @param int|null $page_number Current page number.
 	 * @param bool     $count       Count or select values.
 	 *
@@ -358,10 +360,10 @@ class ItemsTable extends AbstractTable {
 	}
 
 	/**
-	 * Output in case no items exist.
+	 * Output in case no packages exist.
 	 */
 	public function no_items(): void {
-		esc_html_e( 'No items found.', 'bvlwark-update-server' );
+		esc_html_e( 'No packages found.', 'bvlwark-update-server' );
 	}
 
 	/**
@@ -379,20 +381,20 @@ class ItemsTable extends AbstractTable {
 			'updated'     => esc_html__( 'Updated', 'bvlwark-update-server' ),
 		);
 
-		return apply_filters( 'bvlwark_update_server_table_items_column_name', $columns );
+		return apply_filters( 'bvlwark_table_packages_column_name', $columns );
 	}
 
 	/**
-	 * Removes the item(s) permanently from the database.
+	 * Removes the package(s) permanently from the database.
 	 *
 	 * @return void
 	 */
 	private function delete_items(): void {
-		$this->verify_nonce( 'delete', Menu::ITEMS_PAGE );
+		$this->verify_nonce( 'delete', Menu::PACKAGES_PAGE );
 		$this->verify_selection(
 			'id',
-			esc_html__( 'No items were selected.', 'bvlwark-update-server' ),
-			Menu::ITEMS_PAGE
+			esc_html__( 'No packages were selected.', 'bvlwark-update-server' ),
+			Menu::PACKAGES_PAGE
 		);
 
 		$item_ids = isset( $_REQUEST['id'] )
@@ -401,7 +403,7 @@ class ItemsTable extends AbstractTable {
 		$count    = 0;
 
 		foreach ( $item_ids as $item_id ) {
-			$result = bvlwark_delete_item( $item_id );
+			$result = bvlwark_delete_package( $item_id );
 
 			if ( ! is_wp_error( $result ) ) {
 				++$count;
@@ -409,10 +411,10 @@ class ItemsTable extends AbstractTable {
 		}
 
 		$message = esc_html(
-			// translators: %d: number of items deleted.
+			// translators: %d: number of packages deleted.
 			_n(
-				'%s item deleted.',
-				'%s items deleted.',
+				'%s package deleted.',
+				'%s packages deleted.',
 				$count,
 				'bvlwark-update-server',
 			)
@@ -424,17 +426,17 @@ class ItemsTable extends AbstractTable {
 		// Redirect and exit.
 		wp_safe_redirect(
 			admin_url(
-				sprintf( 'admin.php?page=%s', Menu::ITEMS_PAGE )
+				sprintf( 'admin.php?page=%s', Menu::PACKAGES_PAGE )
 			)
 		);
 	}
 
 	/**
-	 * Checks if there are currently any item type filters active.
+	 * Checks if there are currently any package type filters active.
 	 *
 	 * @return bool
 	 */
 	private function is_type_filter_active(): bool {
-		return ( isset( $_GET['type'] ) && in_array( strtolower( $_GET['type'] ), ItemTypeEnum::$status, true ) );
+		return ( isset( $_GET['type'] ) && in_array( strtolower( $_GET['type'] ), PackageTypeEnum::$status, true ) );
 	}
 }

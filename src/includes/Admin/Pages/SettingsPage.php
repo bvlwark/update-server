@@ -27,7 +27,7 @@ class SettingsPage {
 	 */
 	public function create_pages(): void {
 		$hook = add_submenu_page(
-			Menu::ITEMS_PAGE,
+			Menu::PACKAGES_PAGE,
 			__( 'BVLWARK Update Server - Settings', 'bvlwark-update-server' ),
 			__( 'Settings', 'bvlwark-update-server' ),
 			'manage_bvlwark_update_server',

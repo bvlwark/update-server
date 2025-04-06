@@ -3,19 +3,19 @@
 namespace BVLWARK\UpdateServer\Repositories;
 
 use BVLWARK\UpdateServer\Installer;
-use BVLWARK\UpdateServer\Models\ItemModel;
+use BVLWARK\UpdateServer\Models\PackageModel;
 
 defined( 'ABSPATH' ) || exit;
 
-class ItemRepository extends AbstractRepository {
+class PackageRepository extends AbstractRepository {
 	/**
-	 * ItemRepository constructor.
+	 * PackageRepository constructor.
 	 */
 	public function __construct() {
 		global $wpdb;
 
-		$this->table   = $wpdb->prefix . Installer::ITEM_TABLE_NAME;
-		$this->model   = ItemModel::class;
+		$this->table   = $wpdb->prefix . Installer::PACKAGE_TABLE_NAME;
+		$this->model   = PackageModel::class;
 		$this->mapping = array(
 			'name'        => ColumnTypeEnum::VARCHAR,
 			'slug'        => ColumnTypeEnum::VARCHAR,

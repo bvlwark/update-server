@@ -30,7 +30,7 @@ class PackageUtils {
 			return new WP_Error( 409, 'The uploaded file has an invalid extension.' );
 		}
 
-		$vault_dir_path = bvlwark_update_server_vault_directory_path();
+		$vault_dir_path = bvlwark_vault_directory_path();
 		$new_file_name  = "{$slug}_$version.zip";
 
 		if ( file_exists( $vault_dir_path . $new_file_name ) ) {

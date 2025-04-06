@@ -11,9 +11,9 @@ defined( 'ABSPATH' ) || exit;
 class Installer {
 	const int DB_VERSION = 100;
 
-	const string ITEM_TABLE_NAME = 'bvlwark_update_server_item';
+	const string PACKAGE_TABLE_NAME = 'bvlwark_update_server_package';
 
-	const string ITEM_VERSION_TABLE_NAME = 'bvlwark_update_server_item_version';
+	const string PACKAGE_VERSION_TABLE_NAME = 'bvlwark_update_server_package_version';
 
 	const string API_KEY_TABLE_NAME = 'bvlwark_update_server_api_key';
 
@@ -44,8 +44,8 @@ class Installer {
 		global $wpdb;
 
 		$tables = array(
-			$wpdb->prefix . self::ITEM_TABLE_NAME,
-			$wpdb->prefix . self::ITEM_VERSION_TABLE_NAME,
+			$wpdb->prefix . self::PACKAGE_TABLE_NAME,
+			$wpdb->prefix . self::PACKAGE_VERSION_TABLE_NAME,
 			$wpdb->prefix . self::API_KEY_TABLE_NAME,
 		);
 
@@ -111,10 +111,10 @@ class Installer {
 					`updated_at`   DATETIME              NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
 					`updated_by`   BIGINT(20)  UNSIGNED  NULL DEFAULT NULL,
 					PRIMARY KEY (`id`),
-					UNIQUE KEY bvlwark_update_server_item_unique_slug (`slug`)
+					UNIQUE KEY bvlwark_update_server_package_unique_slug (`slug`)
 				) {$wpdb->get_charset_collate()};
 				",
-				$wpdb->prefix . self::ITEM_TABLE_NAME,
+				$wpdb->prefix . self::PACKAGE_TABLE_NAME,
 			)
 		);
 
@@ -123,7 +123,7 @@ class Installer {
 				"
 				CREATE TABLE IF NOT EXISTS %i (
 					`id`           BIGINT(20)  UNSIGNED  NOT NULL AUTO_INCREMENT,
-					`item_id`      BIGINT(20)  UNSIGNED  NOT NULL,
+					`package_id`   BIGINT(20)  UNSIGNED  NOT NULL,
 					`version`      VARCHAR(50)           NOT NULL,
 					`requires`     VARCHAR(50)           NULL DEFAULT NULL,
 					`tested`       VARCHAR(50)           NULL DEFAULT NULL,
@@ -133,10 +133,10 @@ class Installer {
 					`updated_at`   DATETIME              NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
 					`updated_by`   BIGINT(20)  UNSIGNED  NULL DEFAULT NULL,
 					PRIMARY KEY (`id`),
-					UNIQUE KEY bvlwark_update_server_item_version_unique_version (`item_id`, `version`)
+					UNIQUE KEY bvlwark_update_server_package_version_unique_version (`package_id`, `version`)
 				) {$wpdb->get_charset_collate()};
 				",
-				$wpdb->prefix . self::ITEM_VERSION_TABLE_NAME,
+				$wpdb->prefix . self::PACKAGE_VERSION_TABLE_NAME,
 			)
 		);
 
