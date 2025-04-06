@@ -141,6 +141,7 @@ if ( ! function_exists( 'bvlwark_update_item' ) ) {
 	 * @return WP_Error|ItemModel
 	 */
 	function bvlwark_update_item( int $id, array $data ): WP_Error|ItemModel {
+		// TODO: Update .zip files when the slug changes.
 		$update_data = array();
 
 		/** @var null|ItemModel $old_item */

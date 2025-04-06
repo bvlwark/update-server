@@ -6,14 +6,14 @@ use WP_Error;
 
 defined( 'ABSPATH' ) || exit;
 
-class FileUploadUtils {
+class PackageUtils {
 	/**
 	 * @param string $slug    Package slug.
 	 * @param string $version Package version.
 	 *
 	 * @return WP_Error|true
 	 */
-	public static function handle_package_zip_upload( string $slug, string $version ): WP_Error|true {
+	public static function handle_zip_upload( string $slug, string $version ): WP_Error|true {
 		$file = ! empty( $_FILES['package_zip'] )
 			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			? $_FILES['package_zip']
@@ -44,5 +44,17 @@ class FileUploadUtils {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @return void
+	 */
+	public static function handle_package_slug_change(): void {
+	}
+
+	/**
+	 * @return void
+	 */
+	public static function handle_package_version_change(): void {
 	}
 }

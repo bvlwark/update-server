@@ -17,13 +17,12 @@ class ItemVersionRepository extends AbstractRepository {
 		$this->table   = $wpdb->prefix . Installer::ITEM_TABLE_NAME;
 		$this->model   = ItemVersionModel::class;
 		$this->mapping = array(
-			'item_id'     => ColumnTypeEnum::BIGINT,
-			'version'     => ColumnTypeEnum::VARCHAR,
-			'requires'    => ColumnTypeEnum::VARCHAR,
-			'tested'      => ColumnTypeEnum::VARCHAR,
-			'description' => ColumnTypeEnum::TEXT,
-			'changelog'   => ColumnTypeEnum::TEXT,
-			'protected'   => ColumnTypeEnum::TINYINT,
+			'item_id'   => ColumnTypeEnum::BIGINT,
+			'version'   => ColumnTypeEnum::VARCHAR,
+			'requires'  => ColumnTypeEnum::VARCHAR,
+			'tested'    => ColumnTypeEnum::VARCHAR,
+			'changelog' => ColumnTypeEnum::LONGTEXT,
+			'protected' => ColumnTypeEnum::TINYINT,
 		);
 	}
 }

@@ -30,11 +30,6 @@ class ItemVersionModel extends AbstractModel {
 	/**
 	 * @var string
 	 */
-	protected string $description;
-
-	/**
-	 * @var string
-	 */
 	protected string $changelog;
 
 
@@ -50,12 +45,11 @@ class ItemVersionModel extends AbstractModel {
 			return;
 		}
 
-		$this->item_id     = (int) $item_version->item_id;
-		$this->version     = (string) $item_version->version;
-		$this->requires    = (string) $item_version->requires;
-		$this->tested      = (string) $item_version->tested;
-		$this->description = (string) $item_version->description;
-		$this->changelog   = (string) $item_version->changelog;
+		$this->item_id   = (int) $item_version->item_id;
+		$this->version   = (string) $item_version->version;
+		$this->requires  = (string) $item_version->requires;
+		$this->tested    = (string) $item_version->tested;
+		$this->changelog = (string) $item_version->changelog;
 	}
 
 	/**
@@ -112,20 +106,6 @@ class ItemVersionModel extends AbstractModel {
 	 */
 	public function set_tested( string $tested ): void {
 		$this->tested = $tested;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function get_description(): string {
-		return $this->description;
-	}
-
-	/**
-	 * @param string $description New description.
-	 */
-	public function set_description( string $description ): void {
-		$this->description = $description;
 	}
 
 	/**
